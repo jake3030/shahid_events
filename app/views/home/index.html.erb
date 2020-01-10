@@ -1,0 +1,61 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Events</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="list-group scrollable">
+      <% @events.each do |event| %>
+      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1"><%= event["name"] %></h5>
+
+        </div>
+        <p class="mb-1"><%= event["address"] %></p>
+        <small><%= event["time"] %></small>
+      </a>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="w-100" id="map" style="width:900px; height:880px"></div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8">
+  let map;
+  function initMap() {
+    window.fetch_events((events) => {
+      let lng = {lat: events[0].point[1], lng: events[0].point[0]}
+
+      console.log(lng)
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: lng,
+      });
+
+      for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        var marker = new google.maps.Marker({
+          position: {lat: event.point[1], lng: event.point[0]},
+          map: map,
+          title: event.name,
+        });
+      }
+    })
+
+
+  }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV["GOOGLE_API_KEY"] %>&callback=initMap"
+  type="text/javascript"></script>
