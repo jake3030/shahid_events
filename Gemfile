@@ -52,6 +52,12 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem "figaro"
 
+gem "activeadmin"
+gem "devise"
+
+gem "geocoder"
+gem "active_admin_datetimepicker"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

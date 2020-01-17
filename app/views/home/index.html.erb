@@ -12,13 +12,13 @@
   <div class="col-md-4">
     <div class="list-group scrollable">
       <% @events.each do |event| %>
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+      <a href="#" class="event-item list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1"><%= event["name"] %></h5>
+          <h5 class="mb-1"><%= event.name %></h5>
 
         </div>
-        <p class="mb-1"><%= event["address"] %></p>
-        <small><%= event["time"] %></small>
+        <p class="mb-1"><%= event.address %></p>
+        <small><%= event.event_start_at.to_date %> from <%= event.start_time %> - <%= event.end_time %> </small>
       </a>
       <% end %>
     </div>
@@ -33,9 +33,12 @@
 
 <script type="text/javascript" charset="utf-8">
   let map;
+  let markers = {}
   function initMap() {
     window.fetch_events((events) => {
-      let lng = {lat: events[0].point[1], lng: events[0].point[0]}
+      if (events.length === 0)
+        return
+      let lng = {lat: events[0].latitude, lng: events[0].longitude  }
 
       console.log(lng)
       map = new google.maps.Map(document.getElementById('map'), {
@@ -45,11 +48,21 @@
 
       for (var i = 0; i < events.length; i++) {
         var event = events[i];
+
+        var infowindow = new google.maps.InfoWindow({
+          content: `<h2>${event.name}</h2><address>${event.address}</address><small>${moment(event.event_date).format("dddd, MMMM Do YYYY, h:mm:ss a")}</small>`
+        });
+
         var marker = new google.maps.Marker({
-          position: {lat: event.point[1], lng: event.point[0]},
+          position: {lat: event.latitude, lng: event.longitude},
           map: map,
           title: event.name,
         });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+        markers[event.id] = {marker: marker, info: infowindow}
       }
     })
 
