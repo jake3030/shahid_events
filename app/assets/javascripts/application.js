@@ -31,3 +31,13 @@ window.fetch_events = function(cb) {
     cb(window.events)
   });
 }
+
+
+$(function(){
+  $(".event-item").on("mouseover", (e) => {
+    obj = markers[$(e.currentTarget).data("event-id")]
+    obj.info.open(map, obj.marker)
+  }).on("mouseout", (e) => {
+    markers[$(e.currentTarget).data("event-id")].info.close()
+  })
+})

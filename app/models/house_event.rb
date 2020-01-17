@@ -28,6 +28,10 @@ class HouseEvent < ApplicationRecord
     event_end_at.strftime("%l:%m %p")
   end
 
+  def formatted_time
+    "#{event_start_at.to_date} from #{start_time} - #{end_time}"
+  end
+
   def name
     [first_name, last_name].join(" ")
   end

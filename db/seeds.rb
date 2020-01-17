@@ -8,5 +8,5 @@
 require "csv"
 
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
-
+# AdminUser.create!(email: 'admin@shahid.com', password: 'shahid2020', password_confirmation: 'shahid2020')
 HouseEvent.load_from_csv
