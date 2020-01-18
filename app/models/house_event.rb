@@ -8,7 +8,7 @@ class HouseEvent < ApplicationRecord
   after_validation :geocode, latitude: :lat, longitude: :lon
 
   scope :upcoming, -> () {
-    where("created_at > ?", Time.now.beginning_of_day)
+    where("event_start_at > ?", Time.now.beginning_of_day)
   }
   scope :active, -> () {
     where("event_start_at IS NOT NULL")
