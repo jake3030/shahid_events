@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Shahid 2020 Events</h1>
+  <!-- <div class="btn-toolbar mb-2 mb-md-0">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button>
+  </div> -->
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="list-group scrollable">
+      <% @events.each do |event| %>
+      <a href="#" data-event-id="<%= event.id %>" class="event-item list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1"><%= event.name %></h5>
+
+        </div>
+        <p class="mb-1"><%= event.address %></p>
+        <small><%= event.formatted_time %></small>
+      </a>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="w-100" id="map" style="width:900px; height:880px"></div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8">
+  let map;
+  let markers = {}
+  let openMarker = null
+  function initMap() {
+
+    window.fetch_events((events) => {
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: {lat: 37.773972, lng: -122.431297},
+      })
+
+      if (events.length === 0)
+        return
+      let lng = {lat: events[0].latitude, lng: events[0].longitude  }
+
+      console.log(lng)
+
+
+      for (var i = 0; i < events.length; i++) {
+        const event = events[i];
+
+        const infowindow = new google.maps.InfoWindow({
+          content: `<h2>${event.name}</h2><address>${event.address}</address><small>${event.formatted_time}</small>`
+        });
+
+        const marker = new google.maps.Marker({
+          position: {lat: event.latitude, lng: event.longitude},
+          map: map,
+          title: event.name,
+        });
+
+        marker.addListener('click', function() {
+          if (openMarker) {
+            openMarker.close()
+          }
+          openMarker = infowindow
+          infowindow.open(map, marker);
+        });
+        markers[event.id] = {event: event, marker: marker, info: infowindow}
+      }
+    })
+
+
+  }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV["GOOGLE_API_KEY"] %>&callback=initMap"
+  type="text/javascript"></script>

@@ -22,7 +22,8 @@
 //= require_tree .
 
 window.fetch_events = function(cb) {
-  fetch('/events.json')
+  url = window.location.href + ".json"
+  fetch(url)
   .then((response) => {
     return response.json();
   })

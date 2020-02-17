@@ -3,6 +3,12 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: "home#index"
-  get "/events", to: "home#events"
-  get "/iframe", to: "home#iframe"
+
+  resources :house_events, only: [:index] do
+    get "/iframe", to: "house_events#iframe"
+  end
+
+  resources :volunteer_events, only: [:index] do
+    get "/iframe", to: "house_events#iframe"
+  end
 end

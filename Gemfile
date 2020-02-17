@@ -41,6 +41,8 @@ gem 'jquery-rails'
 gem "font-awesome-sass"
 gem 'lodash-rails'
 
+gem "httparty"
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

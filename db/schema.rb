@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_16_181148) do
+ActiveRecord::Schema.define(version: 2020_02_15_181235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,27 @@ ActiveRecord::Schema.define(version: 2020_01_16_181148) do
     t.string "event_link"
     t.float "latitude"
     t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "volunteer_events", force: :cascade do |t|
+    t.string "action_network_id"
+    t.string "title"
+    t.string "name"
+    t.text "description"
+    t.datetime "event_start_at"
+    t.datetime "event_end_at"
+    t.string "venue"
+    t.string "address_street"
+    t.string "address_city"
+    t.string "address_state", default: "CA", null: false
+    t.string "address_zip"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "url"
+    t.string "image_url"
+    t.jsonb "extras"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
